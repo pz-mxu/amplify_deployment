@@ -10,7 +10,19 @@ const region = core.getInput("region")
 
 var amplify = new aws.Amplify({ region })
 
-const createDeployment = (deployParams) => {
+const cancelPending = async (deployParams) => {
+  const { jobSummaries } = await amplify.listJobs(deployParams).promise()
+  jobSummaries
+    .filter((job) => job.status === "PENDING")
+    .forEach(async ({ jobId }) => {
+      const { jobSummary } = await amplify.stopJob({ ...deployParams, jobId }).promise()
+      console.log(`Canceled job ${jobSummary.jobId}`)
+    })
+}
+
+const createDeployment = async (deployParams) => {
+  await cancelPending(deployParams)
+
   return amplify
     .createDeployment(deployParams)
     .promise()
@@ -63,14 +75,12 @@ createDeployment({ appId, branchName })
     core.setOutput("jobId", createdDeployment.jobId)
     console.log(createdDeployment)
   })
-  .catch((e) => {
-    const { jobId } = createdDeployment
+  .catch(async (e) => {
+    const { jobId } = createdDeployment || {}
     if (jobId) {
       console.log(`Error detected, stopping amplify job ${jobId}`)
-      var params = { appId, branchName, jobId }
-      amplify.stopJob(params, (err, data) => {
-        console.log(data)
-      })
+      const { jobSummary } = await amplify.stopJob({ appId, branchName, jobId }).promise()
+      console.log(`Job ${jobSummary.jobId} was stopped`)
     }
     core.setFailed(e.stack)
     throw Error(e)
