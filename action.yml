@@ -19,7 +19,6 @@ inputs:
 outputs:
   jobId:
     description: 'Final Job Id that was generated after a deployment request'
-
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './dist/index.js'

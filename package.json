@@ -1,30 +1,29 @@
 {
-  "name": "@aws-actions/amplify_deployment",
-  "version": "0.3.0",
+  "name": "@pz-mxu/amplify_deployment",
+  "version": "0.1.0",
   "description": "GitHub action creates a deployment into an existing Amplify aplication.",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "ncc build -m ./src/index.js",
-    "lint": "eslint ./src/**/*.js --ignore-path .gitignore --fix",
-    "release": "yarn lint && lerna version --conventional-commits"
+    "build": "ncc build src/index.js --license licenses.txt",
+    "lint": "eslint src/**/*.js --ignore-path .gitignore --fix"
   },
   "author": "Luis Chacón",
   "license": "Apache-2.0",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0",
-    "aws-sdk": "^2.868.0",
-    "axios": "^0.21.1"
+    "@actions/core": "^1.8.2",
+    "@actions/github": "^5.0.3",
+    "aws-sdk": "^2.1151.0",
+    "axios": "^0.27.2"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "^4.18.0",
-    "eslint": "^7.22.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "lerna": "^4.0.0",
-    "ncc": "^0.3.6",
-    "prettier": "^2.2.1",
-    "typescript": "^4.2.3"
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.3"
   }
 }
